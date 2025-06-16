@@ -1,7 +1,6 @@
 using System.Linq;
 using JetBrains.Annotations;
 using PlayerPieces;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 namespace GameHandler
@@ -9,11 +8,13 @@ namespace GameHandler
     public class BoardHandler : MonoBehaviour
     {
         public GridConfig gridConfig;
+        private MoveHandler _moveHandler;
         private IPlayerPiece[,] _board;
 
         private void Start()
         {
             _board = new IPlayerPiece[gridConfig.width, gridConfig.height];
+            _moveHandler = FindFirstObjectByType<MoveHandler>();
         }
 
         public void SetCellState(Vector2Int cellIndex, IPlayerPiece piece)
@@ -22,7 +23,7 @@ namespace GameHandler
         }
 
         [CanBeNull]
-        private IPlayerPiece GetCellState(Vector2Int cellIndex)
+        public IPlayerPiece GetCellState(Vector2Int cellIndex)
         {
             return _board[cellIndex.x, cellIndex.y];
         }
@@ -46,5 +47,7 @@ namespace GameHandler
 
             return false;
         }
+
+
     }
 }

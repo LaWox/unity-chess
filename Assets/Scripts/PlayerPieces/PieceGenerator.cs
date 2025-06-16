@@ -30,12 +30,12 @@ namespace PlayerPieces
                 var pawnPieceWhite = Instantiate(pawnPrefab, new Vector3(i, 0, 0), Quaternion.identity);
                 var pawnMovableComponentWhite = pawnPieceWhite.GetComponent<Movable>();
                 var pawnPieceComponentWhite = pawnPieceWhite.GetComponent<IPlayerPiece>();
-                pawnPieceComponentWhite.ValidMoves = new[] {new Vector2Int(0, 1)};
+                pawnPieceComponentWhite.Initialize(isWhite:true);
 
                 var pawnPieceBlack = Instantiate(pawnPrefab, new Vector3(i, 0, 0), Quaternion.identity);
                 var pawnMovableComponentBlack = pawnPieceBlack.GetComponent<Movable>();
                 var pawnPieceComponentBlack = pawnPieceBlack.GetComponent<IPlayerPiece>();
-                
+                pawnPieceComponentBlack.Initialize(isWhite: false);
                 Movable otherPieceWhite = null;
                 Movable otherPieceBlack = null;
 

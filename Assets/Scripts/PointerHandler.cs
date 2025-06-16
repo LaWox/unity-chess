@@ -29,8 +29,19 @@ public class PointerHandler : MonoBehaviour
     {
         if (!Mouse.current.leftButton.isPressed && _selectedObject)
         {
-            _selectedObject = null;
             OnMovableObjectDropped?.Invoke();
+            
+            if (_moveHandler.IsCurrentMoveValid())
+            {
+                _selectedObject.transform.position = _gridHandler.GetCellSnappingPoint(_pointerPosition);
+            }
+            else
+            {
+                _selectedObject.transform.position = _gridHandler.GetWorldPositionFromCellIndex(_moveHandler.GetPieceStartPos());
+            }
+            
+            _selectedObject = null;
+            
         }
 
         SetPointerPosition();
