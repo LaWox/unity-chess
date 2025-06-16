@@ -1,20 +1,28 @@
 using Constants;
+using GameHandler;
+using Grid;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PointerHandler : MonoBehaviour
 {
     public delegate void PointerHandlerDelegate();
+    public delegate void PointerHandlerDelegateWithVector2(Vector2Int input);
 
     private Camera _camera;
     private Vector3 _pointerPosition;
     private Movable _selectedObject;
+    private Vector2Int _activeCellIndex;
+    private GridHandler _gridHandler;
+    private MoveHandler _moveHandler;
 
     private void Start()
     {
         _pointerPosition = new Vector3();
         _camera = Camera.main;
         _selectedObject = null;
+        _gridHandler = FindFirstObjectByType<GridHandler>();
+        _moveHandler = FindFirstObjectByType<MoveHandler>();
     }
 
     private void Update()
@@ -27,9 +35,13 @@ public class PointerHandler : MonoBehaviour
 
         SetPointerPosition();
     }
+    
+    
 
 
+    public static event PointerHandlerDelegate OnMovableObjectHeld;
     public static event PointerHandlerDelegate OnMovableObjectDropped;
+    public static event PointerHandlerDelegateWithVector2 OnActiveCellUpdate;
 
     private void SetPointerPosition()
     {
@@ -43,19 +55,32 @@ public class PointerHandler : MonoBehaviour
                 case Tags.Movable:
                     if (Mouse.current.leftButton.isPressed && !_selectedObject)
                     {
+                        OnMovableObjectHeld?.Invoke();
                         _selectedObject = hit.transform.gameObject.GetComponent<Movable>();
                         _selectedObject.SetSelected();
+                        _moveHandler.SetPieceStartPos(_gridHandler.GetCellIndexFromWorldPosition(hit.point));
                     }
 
                     break;
                 case Tags.Board:
                     _pointerPosition = hit.point;
+                    var activeCell = _gridHandler.GetCellIndexFromWorldPosition(hit.point);
+                    if (activeCell != _activeCellIndex && _selectedObject)
+                    {
+                        _activeCellIndex = activeCell;
+                        OnActiveCellUpdate?.Invoke(activeCell);
+                    }
                     break;
                 default:
                     _pointerPosition = hit.point;
                     OnMovableObjectDropped?.Invoke();
                     break;
             }
+    }
+
+    public Vector2Int GetActiveCellIndex()
+    {
+        return _activeCellIndex;
     }
 
     public Vector3 GetPointerPosition()

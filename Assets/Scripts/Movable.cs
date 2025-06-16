@@ -1,9 +1,9 @@
 using Constants;
+using Grid;
 using UnityEngine;
 
 public class Movable : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     public PointerHandler pointerHandler;
     public GridHandler gridHandler;
     public Vector2Int startPos;
@@ -29,7 +29,6 @@ public class Movable : MonoBehaviour
         gameObject.transform.position = new Vector3(gridCellPosition.x, transform.position.y, gridCellPosition.z);
     }
 
-    // Update is called once per frame
     private void Update()
     {
         if (_isSelected) transform.position = gridHandler.GetCellSnappingPoint(pointerHandler.GetPointerPosition());

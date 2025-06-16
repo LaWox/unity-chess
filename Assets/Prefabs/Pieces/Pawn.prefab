@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: 6730016ba0e329c499d89e81bd550346, type: 3}
       propertyPath: m_Name
-      value: White Pawn
+      value: Pawn
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 6730016ba0e329c499d89e81bd550346, type: 3}
       propertyPath: m_LocalPosition.x
@@ -63,6 +63,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 6730016ba0e329c499d89e81bd550346, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5890618259770853430}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 6730016ba0e329c499d89e81bd550346, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4444964497207364163}
   m_SourcePrefab: {fileID: 100100000, guid: 6730016ba0e329c499d89e81bd550346, type: 3}
 --- !u!1 &3457669197703496247 stripped
 GameObject:
@@ -84,3 +87,15 @@ MonoBehaviour:
   pointerHandler: {fileID: 0}
   gridHandler: {fileID: 0}
   startPos: {x: 0, y: 0}
+--- !u!114 &4444964497207364163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3457669197703496247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e6f95997ea35d241a2e4cf10c1a62c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

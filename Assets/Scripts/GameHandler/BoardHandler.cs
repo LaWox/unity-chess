@@ -1,6 +1,7 @@
 using System.Linq;
 using JetBrains.Annotations;
 using PlayerPieces;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 namespace GameHandler
@@ -35,7 +36,7 @@ namespace GameHandler
             var move = piece.IsWhite ? endIndex - startIndex : startIndex - endIndex;
 
             var validMoves = piece.ValidMoves;
-
+            
             if (!piece.MovesAreRepeatable) return validMoves.ToList().Contains(move);
 
             foreach (var validMove in validMoves)

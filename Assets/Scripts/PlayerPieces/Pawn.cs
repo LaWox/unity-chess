@@ -9,7 +9,7 @@ namespace PlayerPieces
             IsWhite = isWhite;
         }
 
-        public Vector2Int[] ValidMoves { get; } = { new(0, 1) };
+        public Vector2Int[] ValidMoves { get; set; }
         public bool MovesAreRepeatable => false;
         public bool IsWhite { get; set; }
     }

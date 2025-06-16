@@ -1,3 +1,5 @@
+using GameHandler;
+using Grid;
 using UnityEngine;
 
 namespace PlayerPieces
@@ -15,18 +17,25 @@ namespace PlayerPieces
         public Material materialBlack;
         private GridHandler _gridHandler;
         private PointerHandler _pointerHandler;
+        private BoardHandler _boardHandler;
 
         private void Start()
         {
+            _boardHandler = FindFirstObjectByType<BoardHandler>();
             _pointerHandler = FindFirstObjectByType<PointerHandler>();
             _gridHandler = FindFirstObjectByType<GridHandler>();
 
             for (var i = 0; i < 8; i++)
             {
-                var pawnPieceWhite = Instantiate(pawnPrefab, new Vector3(i, 0, 0), Quaternion.identity)
-                    .GetComponent<Movable>();
-                var pawnPieceBlack = Instantiate(pawnPrefab, new Vector3(i, 0, 0), Quaternion.identity)
-                    .GetComponent<Movable>();
+                var pawnPieceWhite = Instantiate(pawnPrefab, new Vector3(i, 0, 0), Quaternion.identity);
+                var pawnMovableComponentWhite = pawnPieceWhite.GetComponent<Movable>();
+                var pawnPieceComponentWhite = pawnPieceWhite.GetComponent<IPlayerPiece>();
+                pawnPieceComponentWhite.ValidMoves = new[] {new Vector2Int(0, 1)};
+
+                var pawnPieceBlack = Instantiate(pawnPrefab, new Vector3(i, 0, 0), Quaternion.identity);
+                var pawnMovableComponentBlack = pawnPieceBlack.GetComponent<Movable>();
+                var pawnPieceComponentBlack = pawnPieceBlack.GetComponent<IPlayerPiece>();
+                
                 Movable otherPieceWhite = null;
                 Movable otherPieceBlack = null;
 
@@ -65,15 +74,17 @@ namespace PlayerPieces
                         break;
                 }
 
-                pawnPieceWhite.pointerHandler = _pointerHandler;
-                pawnPieceWhite.gridHandler = _gridHandler;
-                pawnPieceWhite.startPos = new Vector2Int(i, 1);
-                pawnPieceWhite.GetComponent<Renderer>().material = materialWhite;
+                pawnMovableComponentWhite.pointerHandler = _pointerHandler;
+                pawnMovableComponentWhite.gridHandler = _gridHandler;
+                pawnMovableComponentWhite.startPos = new Vector2Int(i, 1);
+                _boardHandler.SetCellState(new Vector2Int(i, 1), pawnPieceComponentWhite);
+                pawnMovableComponentWhite.GetComponent<Renderer>().material = materialWhite;
 
-                pawnPieceBlack.pointerHandler = _pointerHandler;
-                pawnPieceBlack.gridHandler = _gridHandler;
-                pawnPieceBlack.startPos = new Vector2Int(i, 6);
-                pawnPieceBlack.GetComponent<Renderer>().material = materialBlack;
+                pawnMovableComponentBlack.pointerHandler = _pointerHandler;
+                pawnMovableComponentBlack.gridHandler = _gridHandler;
+                pawnMovableComponentBlack.startPos = new Vector2Int(i, 6);
+                _boardHandler.SetCellState(new Vector2Int(i, 6), pawnPieceComponentBlack);
+                pawnMovableComponentBlack.GetComponent<Renderer>().material = materialBlack;
 
                 if (!otherPieceWhite || !otherPieceBlack) continue;
 
