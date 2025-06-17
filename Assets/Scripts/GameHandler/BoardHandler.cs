@@ -8,22 +8,22 @@ namespace GameHandler
     public class BoardHandler : MonoBehaviour
     {
         public GridConfig gridConfig;
-        private IPlayerPiece[,] _board;
+        private PlayerPiece[,] _board;
         private MoveHandler _moveHandler;
 
         private void Start()
         {
-            _board = new IPlayerPiece[gridConfig.width, gridConfig.height];
+            _board = new PlayerPiece[gridConfig.width, gridConfig.height];
             _moveHandler = FindFirstObjectByType<MoveHandler>();
         }
 
-        public void SetCellState(Vector2Int cellIndex, IPlayerPiece piece)
+        public void SetCellState(Vector2Int cellIndex, PlayerPiece piece)
         {
             _board[cellIndex.x, cellIndex.y] = piece;
         }
 
         [CanBeNull]
-        public IPlayerPiece GetCellState(Vector2Int cellIndex)
+        public PlayerPiece GetCellState(Vector2Int cellIndex)
         {
             return _board[cellIndex.x, cellIndex.y];
         }

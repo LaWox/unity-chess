@@ -42,6 +42,7 @@ namespace GameHandler
         private void OnActiveCellUpdate(Vector2Int pos)
         {
             var isValid = _boardHandler.IsValidMove(_pieceStartPos, pos);
+
             _activeCellIndex = pos;
             _moveIndicator.SetEnabled(true);
             _moveIndicator.SetValid(isValid);
@@ -59,8 +60,11 @@ namespace GameHandler
             if (!_currentMoveValid) return;
 
             var activePiece = _boardHandler.GetCellState(_pieceStartPos);
+            var endPiece = _boardHandler.GetCellState(_activeCellIndex);
 
-            _boardHandler.SetCellState(_pieceStartPos, null);
+            if (endPiece != null)
+
+                _boardHandler.SetCellState(_pieceStartPos, null);
             _boardHandler.SetCellState(_activeCellIndex, activePiece);
         }
 

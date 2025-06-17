@@ -29,12 +29,12 @@ namespace PlayerPieces
             {
                 var pawnPieceWhite = Instantiate(pawnPrefab, new Vector3(i, 0, 0), Quaternion.identity);
                 var pawnMovableComponentWhite = pawnPieceWhite.GetComponent<Movable>();
-                var pawnPieceComponentWhite = pawnPieceWhite.GetComponent<IPlayerPiece>();
+                var pawnPieceComponentWhite = pawnPieceWhite.GetComponent<PlayerPiece>();
 
 
                 var pawnPieceBlack = Instantiate(pawnPrefab, new Vector3(i, 0, 0), Quaternion.identity);
                 var pawnMovableComponentBlack = pawnPieceBlack.GetComponent<Movable>();
-                var pawnPieceComponentBlack = pawnPieceBlack.GetComponent<IPlayerPiece>();
+                var pawnPieceComponentBlack = pawnPieceBlack.GetComponent<PlayerPiece>();
 
 
                 GameObject otherPieceWhite = null;
@@ -90,7 +90,7 @@ namespace PlayerPieces
                 if (!otherPieceWhite || !otherPieceBlack) continue;
 
                 // white
-                var pieceComponentWhite = otherPieceWhite.GetComponent<IPlayerPiece>();
+                var pieceComponentWhite = otherPieceWhite.GetComponent<PlayerPiece>();
                 pieceComponentWhite.Initialize(true, new Vector2Int(i, 0));
                 _boardHandler.SetCellState(new Vector2Int(i, 0), pieceComponentWhite);
 
@@ -103,7 +103,7 @@ namespace PlayerPieces
                 otherMovableWhite.gridHandler = _gridHandler;
 
                 // black
-                var pieceComponentBlack = otherPieceBlack.GetComponent<IPlayerPiece>();
+                var pieceComponentBlack = otherPieceBlack.GetComponent<PlayerPiece>();
                 pieceComponentBlack.Initialize(false, new Vector2Int(i, 7));
                 _boardHandler.SetCellState(new Vector2Int(i, 7), pieceComponentBlack);
 
