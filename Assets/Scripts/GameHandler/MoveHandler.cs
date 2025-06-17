@@ -6,18 +6,19 @@ namespace GameHandler
     public class MoveHandler : MonoBehaviour
     {
         public GameObject moveIndicatorPrefab;
-        private MoveIndicator _moveIndicator;
-        private Vector2Int _pieceStartPos;
         private Vector2Int _activeCellIndex;
         private BoardHandler _boardHandler;
-        private GridHandler _gridHandler;
         private bool _currentMoveValid;
+        private GridHandler _gridHandler;
+        private MoveIndicator _moveIndicator;
+        private Vector2Int _pieceStartPos;
 
         private void Awake()
         {
             _pieceStartPos = new Vector2Int();
             _currentMoveValid = false;
-            _moveIndicator = Instantiate(moveIndicatorPrefab, new Vector3(0, 0.01f, 0), Quaternion.identity).GetComponent<MoveIndicator>();
+            _moveIndicator = Instantiate(moveIndicatorPrefab, new Vector3(0, 0.01f, 0), Quaternion.identity)
+                .GetComponent<MoveIndicator>();
             PointerHandler.OnActiveCellUpdate += OnActiveCellUpdate;
             PointerHandler.OnMovableObjectDropped += OnPieceDropped;
         }
@@ -32,12 +33,12 @@ namespace GameHandler
         {
             return _currentMoveValid;
         }
-        
+
         public void SetPieceStartPos(Vector2Int pos)
         {
             _pieceStartPos = pos;
         }
-        
+
         private void OnActiveCellUpdate(Vector2Int pos)
         {
             var isValid = _boardHandler.IsValidMove(_pieceStartPos, pos);
@@ -56,9 +57,9 @@ namespace GameHandler
             _moveIndicator.SetEnabled(false);
 
             if (!_currentMoveValid) return;
-            
+
             var activePiece = _boardHandler.GetCellState(_pieceStartPos);
-                
+
             _boardHandler.SetCellState(_pieceStartPos, null);
             _boardHandler.SetCellState(_activeCellIndex, activePiece);
         }
@@ -67,7 +68,5 @@ namespace GameHandler
         {
             return _pieceStartPos;
         }
-
-        
     }
 }

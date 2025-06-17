@@ -2,11 +2,9 @@ using UnityEngine;
 
 namespace PlayerPieces
 {
-    public class Pawn : MonoBehaviour, IPlayerPiece
+    public class Rook : MonoBehaviour, IPlayerPiece
     {
-        private readonly Vector2Int[] _captureMoves = {new (1, 1), new (-1, 1)};
-        private readonly Vector2Int[] _firstMoveMoves = {new (0, 2), new (0, 1)};
-        private readonly Vector2Int[] _validMoves = {new (0, 1)};
+        private readonly Vector2Int[] _validMoves = {new (1,0), new (0, 1), new (0, -1), new (-1, 0)};
         
         public void Initialize(bool isWhite, Vector2Int startPos)
         {
@@ -16,11 +14,10 @@ namespace PlayerPieces
 
         public Vector2Int[] GetValidMoves(bool isCapture = false, bool isFirstMove = false)
         {
-            if (isFirstMove) return _firstMoveMoves;
-            return isCapture ?  _captureMoves : _validMoves;
+            return _validMoves;
         }
         
-        public bool MovesAreRepeatable => false;
+        public bool MovesAreRepeatable => true;
         public bool IsWhite { get; private set; }
         public Vector2Int StartPos { get; private set; }
     }

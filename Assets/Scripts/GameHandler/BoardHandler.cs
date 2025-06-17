@@ -8,8 +8,8 @@ namespace GameHandler
     public class BoardHandler : MonoBehaviour
     {
         public GridConfig gridConfig;
-        private MoveHandler _moveHandler;
         private IPlayerPiece[,] _board;
+        private MoveHandler _moveHandler;
 
         private void Start()
         {
@@ -32,28 +32,24 @@ namespace GameHandler
         {
             var piece = GetCellState(startIndex);
             var endPiece = GetCellState(endIndex);
-            
-            if (piece == null) return false;
-            
-            var isCapture = endPiece != null && piece.IsWhite != endPiece.IsWhite;
 
-            
+            if (piece == null) return false;
             if (endPiece != null && piece.IsWhite == endPiece.IsWhite) return false;
 
             var move = piece.IsWhite ? endIndex - startIndex : startIndex - endIndex;
+            if (move is { x: 0, y: 0 }) return false;
 
-            var validMoves = piece.GetValidMoves(isFirstMove: startIndex == piece.StartPos ,isCapture: isCapture);
-            
+            var isCapture = endPiece != null && piece.IsWhite != endPiece.IsWhite;
+
+            var validMoves = piece.GetValidMoves(isFirstMove: startIndex == piece.StartPos, isCapture: isCapture);
+
             if (!piece.MovesAreRepeatable) return validMoves.ToList().Contains(move);
 
-            foreach (var validMove in validMoves)
-                if (validMove.x % move.x == 0 && validMove.y % move.y == 0 &&
-                    validMove.x / move.x == validMove.y / move.y)
-                    return true;
+            if (Mathf.Abs(move.x) == Mathf.Abs(move.y)) move /= Mathf.Abs(move.x);
 
-            return false;
+            if (move.x == 0 || move.y == 0) move = move / Mathf.FloorToInt(move.magnitude);
+
+            return validMoves.ToList().Contains(move);
         }
-
-
     }
 }
