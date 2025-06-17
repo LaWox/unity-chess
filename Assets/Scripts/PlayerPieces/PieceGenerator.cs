@@ -66,7 +66,7 @@ namespace PlayerPieces
                 pawnPieceWhite.transform.position = _gridHandler.GetWorldPositionFromCellIndex(new Vector2Int(i, 1));
                 ;
                 pawnPieceWhite.GetComponent<Renderer>().material = materialWhite;
-                pawnPieceComponentWhite.Initialize(true, new Vector2Int(i, 1));
+                pawnPieceComponentWhite.Initialize(true, new Vector2Int(i, 1), false);
                 _boardHandler.SetCellState(new Vector2Int(i, 1), pawnPieceComponentWhite);
 
                 pawnMovableComponentWhite.pointerHandler = _pointerHandler;
@@ -74,9 +74,9 @@ namespace PlayerPieces
 
                 // black
                 pawnPieceBlack.transform.position = _gridHandler.GetWorldPositionFromCellIndex(new Vector2Int(i, 6));
-                ;
+
                 pawnPieceBlack.GetComponent<Renderer>().material = materialBlack;
-                pawnPieceComponentBlack.Initialize(false, new Vector2Int(i, 6));
+                pawnPieceComponentBlack.Initialize(false, new Vector2Int(i, 6), false);
                 _boardHandler.SetCellState(new Vector2Int(i, 6), pawnPieceComponentBlack);
 
                 pawnMovableComponentBlack.pointerHandler = _pointerHandler;
@@ -85,11 +85,13 @@ namespace PlayerPieces
                 // other pieces
                 if (!otherPieceWhite || !otherPieceBlack) continue;
 
+
                 // white
                 var pieceComponentWhite = otherPieceWhite.GetComponent<PlayerPiece>();
-                pieceComponentWhite.Initialize(true, new Vector2Int(i, 0));
-                _boardHandler.SetCellState(new Vector2Int(i, 0), pieceComponentWhite);
+                var hasRepeatableMoves = HasRepeatableMoves(pieceComponentWhite);
 
+                pieceComponentWhite.Initialize(true, new Vector2Int(i, 0), hasRepeatableMoves);
+                _boardHandler.SetCellState(new Vector2Int(i, 0), pieceComponentWhite);
 
                 otherPieceWhite.transform.position = _gridHandler.GetWorldPositionFromCellIndex(new Vector2Int(i, 0));
                 otherPieceWhite.GetComponent<Renderer>().material = materialWhite;
@@ -100,7 +102,7 @@ namespace PlayerPieces
 
                 // black
                 var pieceComponentBlack = otherPieceBlack.GetComponent<PlayerPiece>();
-                pieceComponentBlack.Initialize(false, new Vector2Int(i, 7));
+                pieceComponentBlack.Initialize(false, new Vector2Int(i, 7), hasRepeatableMoves);
                 _boardHandler.SetCellState(new Vector2Int(i, 7), pieceComponentBlack);
 
                 var otherMovableBlack = otherPieceBlack.GetComponent<Movable>();
@@ -109,6 +111,19 @@ namespace PlayerPieces
                 otherPieceBlack.transform.position = _gridHandler.GetWorldPositionFromCellIndex(new Vector2Int(i, 7));
                 otherMovableBlack.pointerHandler = _pointerHandler;
                 otherMovableBlack.gridHandler = _gridHandler;
+            }
+        }
+
+        private static bool HasRepeatableMoves(PlayerPiece piece)
+        {
+            switch (piece)
+            {
+                case Pawn:
+                case King:
+                case Knight:
+                    return false;
+                default:
+                    return true;
             }
         }
     }

@@ -5,18 +5,21 @@ namespace GameHandler
 {
     public class MoveHandler : MonoBehaviour
     {
+        public delegate void MoveHandlerDelegate();
+
         public GameObject moveIndicatorPrefab;
         private Vector2Int _activeCellIndex;
         private BoardHandler _boardHandler;
-        private bool _currentMoveValid;
         private GridHandler _gridHandler;
         private MoveIndicator _moveIndicator;
         private Vector2Int _pieceStartPos;
 
+        public bool IsCurrentMoveValid { get; private set; }
+
         private void Awake()
         {
             _pieceStartPos = new Vector2Int();
-            _currentMoveValid = false;
+            IsCurrentMoveValid = false;
             _moveIndicator = Instantiate(moveIndicatorPrefab, new Vector3(0, 0.01f, 0), Quaternion.identity)
                 .GetComponent<MoveIndicator>();
             PointerHandler.OnActiveCellUpdate += OnActiveCellUpdate;
@@ -29,10 +32,8 @@ namespace GameHandler
             _gridHandler = FindFirstObjectByType<GridHandler>();
         }
 
-        public bool IsCurrentMoveValid()
-        {
-            return _currentMoveValid;
-        }
+        public static event MoveHandlerDelegate OnTurnOver;
+
 
         public void SetPieceStartPos(Vector2Int pos)
         {
@@ -46,7 +47,7 @@ namespace GameHandler
             _activeCellIndex = pos;
             _moveIndicator.SetEnabled(true);
             _moveIndicator.SetValid(isValid);
-            _currentMoveValid = isValid;
+            IsCurrentMoveValid = isValid;
 
             var worldPos = _gridHandler.GetWorldPositionFromCellIndex(pos);
             _moveIndicator.transform.position = new Vector3(worldPos.x, 0.01f, worldPos.z);
@@ -57,15 +58,17 @@ namespace GameHandler
             _moveIndicator.SetValid(false);
             _moveIndicator.SetEnabled(false);
 
-            if (!_currentMoveValid) return;
+            if (!IsCurrentMoveValid) return;
 
             var activePiece = _boardHandler.GetCellState(_pieceStartPos);
             var endPiece = _boardHandler.GetCellState(_activeCellIndex);
 
-            if (endPiece != null) endPiece.gameObject.SetActive(false);
+            if (endPiece) endPiece.gameObject.SetActive(false);
 
             _boardHandler.SetCellState(_pieceStartPos, null);
             _boardHandler.SetCellState(_activeCellIndex, activePiece);
+
+            OnTurnOver?.Invoke();
         }
 
         public Vector2Int GetPieceStartPos()

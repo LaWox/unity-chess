@@ -9,7 +9,7 @@ namespace PlayerPieces
         public virtual Vector2Int[] ValidMoves { get; }
         public bool IsWhite { get; set; }
 
-        public void Initialize(bool isWhite, Vector2Int startPos, bool movesAreRepeatable = false)
+        public void Initialize(bool isWhite, Vector2Int startPos, bool movesAreRepeatable)
         {
             MovesAreRepeatable = movesAreRepeatable;
             StartPos = startPos;

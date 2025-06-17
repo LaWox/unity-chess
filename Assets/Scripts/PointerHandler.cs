@@ -7,14 +7,16 @@ using UnityEngine.InputSystem;
 public class PointerHandler : MonoBehaviour
 {
     public delegate void PointerHandlerDelegate();
+
     public delegate void PointerHandlerDelegateWithVector2(Vector2Int input);
 
-    private Camera _camera;
-    private Vector3 _pointerPosition;
-    private Movable _selectedObject;
     private Vector2Int _activeCellIndex;
+
+    private Camera _camera;
     private GridHandler _gridHandler;
     private MoveHandler _moveHandler;
+    private Vector3 _pointerPosition;
+    private Movable _selectedObject;
 
     private void Start()
     {
@@ -30,24 +32,16 @@ public class PointerHandler : MonoBehaviour
         if (!Mouse.current.leftButton.isPressed && _selectedObject)
         {
             OnMovableObjectDropped?.Invoke();
-            
-            if (_moveHandler.IsCurrentMoveValid())
-            {
-                _selectedObject.transform.position = _gridHandler.GetCellSnappingPoint(_pointerPosition);
-            }
-            else
-            {
-                _selectedObject.transform.position = _gridHandler.GetWorldPositionFromCellIndex(_moveHandler.GetPieceStartPos());
-            }
-            
+
+            _selectedObject.transform.position = _moveHandler.IsCurrentMoveValid
+                ? _gridHandler.GetCellSnappingPoint(_pointerPosition)
+                : _gridHandler.GetWorldPositionFromCellIndex(_moveHandler.GetPieceStartPos());
+
             _selectedObject = null;
-            
         }
 
         SetPointerPosition();
     }
-    
-    
 
 
     public static event PointerHandlerDelegate OnMovableObjectHeld;
@@ -81,6 +75,7 @@ public class PointerHandler : MonoBehaviour
                         _activeCellIndex = activeCell;
                         OnActiveCellUpdate?.Invoke(activeCell);
                     }
+
                     break;
                 default:
                     _pointerPosition = hit.point;

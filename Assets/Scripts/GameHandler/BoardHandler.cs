@@ -9,12 +9,15 @@ namespace GameHandler
     {
         public GridConfig gridConfig;
         private PlayerPiece[,] _board;
-        private MoveHandler _moveHandler;
+
+        private void Awake()
+        {
+            _board = new PlayerPiece[gridConfig.width, gridConfig.height];
+        }
 
         private void Start()
         {
-            _board = new PlayerPiece[gridConfig.width, gridConfig.height];
-            _moveHandler = FindFirstObjectByType<MoveHandler>();
+            OnPlayerChange(true);
         }
 
         public void SetCellState(Vector2Int cellIndex, PlayerPiece piece)
@@ -33,13 +36,13 @@ namespace GameHandler
             var piece = GetCellState(startIndex);
             var endPiece = GetCellState(endIndex);
 
-            if (piece == null) return false;
-            if (endPiece != null && piece.IsWhite == endPiece.IsWhite) return false;
+            if (!piece) return false;
+            if (endPiece && piece.IsWhite == endPiece.IsWhite) return false;
 
             var move = piece.IsWhite ? endIndex - startIndex : startIndex - endIndex;
             if (move is { x: 0, y: 0 }) return false;
 
-            var isCapture = endPiece != null && piece.IsWhite != endPiece.IsWhite;
+            var isCapture = endPiece && piece.IsWhite != endPiece.IsWhite;
 
             var validMoves = piece.GetValidMoves(isFirstMove: startIndex == piece.StartPos, isCapture: isCapture);
 
@@ -50,6 +53,22 @@ namespace GameHandler
             if (move.x == 0 || move.y == 0) move = move / Mathf.FloorToInt(move.magnitude);
 
             return validMoves.ToList().Contains(move);
+        }
+
+        public void OnPlayerChange(bool isWhitesTurn)
+        {
+            var activePieces = _board
+                .Cast<PlayerPiece>()
+                .Where(piece => piece)
+                .Where(piece => isWhitesTurn ? piece.IsWhite : !piece.IsWhite)
+                .ToList();
+            var inActivePieces = _board
+                .Cast<PlayerPiece>().Except(activePieces).Where(piece => piece).ToList();
+
+            activePieces
+                .ForEach(piece => piece.gameObject.GetComponent<MeshCollider>().enabled = true);
+            inActivePieces
+                .ForEach(piece => piece.gameObject.GetComponent<MeshCollider>().enabled = false);
         }
     }
 }
