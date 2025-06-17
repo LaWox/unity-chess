@@ -62,9 +62,9 @@ namespace GameHandler
             var activePiece = _boardHandler.GetCellState(_pieceStartPos);
             var endPiece = _boardHandler.GetCellState(_activeCellIndex);
 
-            if (endPiece != null)
+            if (endPiece != null) endPiece.gameObject.SetActive(false);
 
-                _boardHandler.SetCellState(_pieceStartPos, null);
+            _boardHandler.SetCellState(_pieceStartPos, null);
             _boardHandler.SetCellState(_activeCellIndex, activePiece);
         }
 

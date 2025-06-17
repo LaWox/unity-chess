@@ -31,11 +31,9 @@ namespace PlayerPieces
                 var pawnMovableComponentWhite = pawnPieceWhite.GetComponent<Movable>();
                 var pawnPieceComponentWhite = pawnPieceWhite.GetComponent<PlayerPiece>();
 
-
                 var pawnPieceBlack = Instantiate(pawnPrefab, new Vector3(i, 0, 0), Quaternion.identity);
                 var pawnMovableComponentBlack = pawnPieceBlack.GetComponent<Movable>();
                 var pawnPieceComponentBlack = pawnPieceBlack.GetComponent<PlayerPiece>();
-
 
                 GameObject otherPieceWhite = null;
                 GameObject otherPieceBlack = null;
@@ -44,7 +42,6 @@ namespace PlayerPieces
                 {
                     case 0 or 7:
                         otherPieceWhite = Instantiate(rookPrefab, new Vector3(i, 0, 0), Quaternion.identity);
-
                         otherPieceBlack = Instantiate(rookPrefab, new Vector3(i, 0, 0), Quaternion.identity);
                         break;
                     case 1 or 6:
@@ -53,7 +50,6 @@ namespace PlayerPieces
                         break;
                     case 2 or 5:
                         otherPieceWhite = Instantiate(bishopPrefab, new Vector3(i, 0, 0), Quaternion.identity);
-
                         otherPieceBlack = Instantiate(bishopPrefab, new Vector3(i, 0, 0), Quaternion.identity);
                         break;
                     case 3:
