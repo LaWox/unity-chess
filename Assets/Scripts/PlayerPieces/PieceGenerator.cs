@@ -30,73 +30,75 @@ namespace PlayerPieces
                 var pawnPieceWhite = Instantiate(pawnPrefab, new Vector3(i, 0, 0), Quaternion.identity);
                 var pawnMovableComponentWhite = pawnPieceWhite.GetComponent<Movable>();
                 var pawnPieceComponentWhite = pawnPieceWhite.GetComponent<IPlayerPiece>();
-                pawnPieceComponentWhite.Initialize(isWhite:true);
+                
 
                 var pawnPieceBlack = Instantiate(pawnPrefab, new Vector3(i, 0, 0), Quaternion.identity);
                 var pawnMovableComponentBlack = pawnPieceBlack.GetComponent<Movable>();
                 var pawnPieceComponentBlack = pawnPieceBlack.GetComponent<IPlayerPiece>();
-                pawnPieceComponentBlack.Initialize(isWhite: false);
-                Movable otherPieceWhite = null;
-                Movable otherPieceBlack = null;
+                
+                
+                GameObject otherPieceWhite = null;
+                GameObject otherPieceBlack = null;
 
                 switch (i)
                 {
                     case 0 or 7:
-                        otherPieceWhite = Instantiate(rookPrefab, new Vector3(i, 0, 0), Quaternion.identity)
-                            .GetComponent<Movable>();
-                        otherPieceBlack = Instantiate(rookPrefab, new Vector3(i, 0, 0), Quaternion.identity)
-                            .GetComponent<Movable>();
+                        otherPieceWhite = Instantiate(rookPrefab, new Vector3(i, 0, 0), Quaternion.identity);
+                        otherPieceBlack = Instantiate(rookPrefab, new Vector3(i, 0, 0), Quaternion.identity);
                         break;
                     case 1 or 6:
-                        otherPieceWhite = Instantiate(knightPrefab, new Vector3(i, 0, 0), Quaternion.identity)
-                            .GetComponent<Movable>();
-                        otherPieceBlack = Instantiate(knightPrefab, new Vector3(i, 0, 0), Quaternion.identity)
-                            .GetComponent<Movable>();
+                        otherPieceWhite = Instantiate(knightPrefab, new Vector3(i, 0, 0), Quaternion.identity);
+                        otherPieceBlack = Instantiate(knightPrefab, new Vector3(i, 0, 0), Quaternion.identity);
                         break;
                     case 2 or 5:
-                        otherPieceWhite = Instantiate(bishopPrefab, new Vector3(i, 0, 0), Quaternion.identity)
-                            .GetComponent<Movable>();
+                        otherPieceWhite = Instantiate(bishopPrefab, new Vector3(i, 0, 0), Quaternion.identity);
 
-                        otherPieceBlack = Instantiate(bishopPrefab, new Vector3(i, 0, 0), Quaternion.identity)
-                            .GetComponent<Movable>();
+                        otherPieceBlack = Instantiate(bishopPrefab, new Vector3(i, 0, 0), Quaternion.identity);
                         break;
                     case 3:
-                        otherPieceWhite = Instantiate(queenPrefab, new Vector3(i, 0, 0), Quaternion.identity)
-                            .GetComponent<Movable>();
-                        otherPieceBlack = Instantiate(queenPrefab, new Vector3(i, 0, 0), Quaternion.identity)
-                            .GetComponent<Movable>();
+                        otherPieceWhite = Instantiate(queenPrefab, new Vector3(i, 0, 0), Quaternion.identity);
+                        otherPieceBlack = Instantiate(queenPrefab, new Vector3(i, 0, 0), Quaternion.identity);
                         break;
                     case 4:
-                        otherPieceWhite = Instantiate(kingPrefab, new Vector3(i, 0, 0), Quaternion.identity)
-                            .GetComponent<Movable>();
-                        otherPieceBlack = Instantiate(kingPrefab, new Vector3(i, 0, 0), Quaternion.identity)
-                            .GetComponent<Movable>();
+                        otherPieceWhite = Instantiate(kingPrefab, new Vector3(i, 0, 0), Quaternion.identity);
+                        otherPieceBlack = Instantiate(kingPrefab, new Vector3(i, 0, 0), Quaternion.identity);
                         break;
                 }
 
+                // white
+                pawnPieceWhite.transform.position = _gridHandler.GetWorldPositionFromCellIndex(new Vector2Int(i, 1));;
+                pawnPieceWhite.GetComponent<Renderer>().material = materialWhite;
+                pawnPieceComponentWhite.Initialize(isWhite:true, startPos: new Vector2Int(i, 1));
+                _boardHandler.SetCellState(new Vector2Int(i, 1), pawnPieceComponentWhite);
+                
                 pawnMovableComponentWhite.pointerHandler = _pointerHandler;
                 pawnMovableComponentWhite.gridHandler = _gridHandler;
-                pawnMovableComponentWhite.startPos = new Vector2Int(i, 1);
-                _boardHandler.SetCellState(new Vector2Int(i, 1), pawnPieceComponentWhite);
-                pawnMovableComponentWhite.GetComponent<Renderer>().material = materialWhite;
-
+                
+                // black
+                pawnPieceBlack.transform.position = _gridHandler.GetWorldPositionFromCellIndex(new Vector2Int(i, 6));;
+                pawnPieceBlack.GetComponent<Renderer>().material = materialBlack;
+                pawnPieceComponentBlack.Initialize(isWhite: false, new Vector2Int(i, 6));
+                _boardHandler.SetCellState(new Vector2Int(i, 6), pawnPieceComponentBlack);
+                
                 pawnMovableComponentBlack.pointerHandler = _pointerHandler;
                 pawnMovableComponentBlack.gridHandler = _gridHandler;
-                pawnMovableComponentBlack.startPos = new Vector2Int(i, 6);
-                _boardHandler.SetCellState(new Vector2Int(i, 6), pawnPieceComponentBlack);
-                pawnMovableComponentBlack.GetComponent<Renderer>().material = materialBlack;
 
+                // other pieces
                 if (!otherPieceWhite || !otherPieceBlack) continue;
-
-                otherPieceWhite.pointerHandler = _pointerHandler;
-                otherPieceWhite.gridHandler = _gridHandler;
-                otherPieceWhite.startPos = new Vector2Int(i, 0);
+                
+                otherPieceWhite.transform.position = _gridHandler.GetWorldPositionFromCellIndex(new Vector2Int(i, 0));
                 otherPieceWhite.GetComponent<Renderer>().material = materialWhite;
 
-                otherPieceBlack.pointerHandler = _pointerHandler;
-                otherPieceBlack.gridHandler = _gridHandler;
-                otherPieceBlack.startPos = new Vector2Int(i, 7);
+                var otherMovableWhite = otherPieceWhite.GetComponent<Movable>();
+                otherMovableWhite.pointerHandler = _pointerHandler;
+                otherMovableWhite.gridHandler = _gridHandler;
+
+                var otherMovableBlack = otherPieceBlack.GetComponent<Movable>();
                 otherPieceBlack.GetComponent<Renderer>().material = materialBlack;
+                
+                otherPieceBlack.transform.position = _gridHandler.GetWorldPositionFromCellIndex(new Vector2Int(i, 7));
+                otherMovableBlack.pointerHandler = _pointerHandler;
+                otherMovableBlack.gridHandler = _gridHandler;
             }
         }
     }

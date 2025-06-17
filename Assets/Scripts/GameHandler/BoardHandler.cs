@@ -31,12 +31,18 @@ namespace GameHandler
         public bool IsValidMove(Vector2Int startIndex, Vector2Int endIndex)
         {
             var piece = GetCellState(startIndex);
-
+            var endPiece = GetCellState(endIndex);
+            
             if (piece == null) return false;
+            
+            var isCapture = endPiece != null && piece.IsWhite != endPiece.IsWhite;
+
+            
+            if (endPiece != null && piece.IsWhite == endPiece.IsWhite) return false;
 
             var move = piece.IsWhite ? endIndex - startIndex : startIndex - endIndex;
 
-            var validMoves = piece.ValidMoves;
+            var validMoves = piece.GetValidMoves(isFirstMove: startIndex == piece.StartPos ,isCapture: isCapture);
             
             if (!piece.MovesAreRepeatable) return validMoves.ToList().Contains(move);
 

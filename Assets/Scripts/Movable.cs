@@ -6,7 +6,6 @@ public class Movable : MonoBehaviour
 {
     public PointerHandler pointerHandler;
     public GridHandler gridHandler;
-    public Vector2Int startPos;
     private Collider _collider;
     private bool _isSelected;
     private Material _material;
@@ -22,13 +21,7 @@ public class Movable : MonoBehaviour
         _selectedColor = new Color(_startColor.r, _startColor.g, _startColor.b, 0.5f);
         PointerHandler.OnMovableObjectDropped += DropObject;
     }
-
-    private void Start()
-    {
-        var gridCellPosition = gridHandler.GetWorldPositionFromCellIndex(startPos);
-        gameObject.transform.position = new Vector3(gridCellPosition.x, transform.position.y, gridCellPosition.z);
-    }
-
+    
     private void Update()
     {
         if (_isSelected) transform.position = gridHandler.GetCellSnappingPoint(pointerHandler.GetPointerPosition());

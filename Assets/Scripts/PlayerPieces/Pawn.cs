@@ -4,13 +4,24 @@ namespace PlayerPieces
 {
     public class Pawn : MonoBehaviour, IPlayerPiece
     {
-        public void Initialize(bool isWhite)
+        private readonly Vector2Int[] _captureMoves = {new (1, 1), new (-1, 1)};
+        private readonly Vector2Int[] _firstMoveMoves = {new (0, 2), new (0, 1)};
+        private readonly Vector2Int[] _validMoves = {new (0, 1)};
+        
+        public void Initialize(bool isWhite, Vector2Int startPos)
         {
             IsWhite = isWhite;
-            ValidMoves = new[] {new Vector2Int(0, 1)};
+            StartPos = startPos;
         }
-        public Vector2Int[] ValidMoves { get; set; }
+
+        public Vector2Int[] GetValidMoves(bool isCapture = false, bool isFirstMove = false)
+        {
+            if (isFirstMove) return _firstMoveMoves;
+            return isCapture ?  _captureMoves : _validMoves;
+        }
+        
         public bool MovesAreRepeatable => false;
         public bool IsWhite { get; set; }
+        public Vector2Int StartPos { get; set; }
     }
 }
