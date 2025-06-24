@@ -13,11 +13,17 @@ namespace GameHandler
             IsWhitesTurn = true;
 
             MoveHandler.OnTurnOver += OnTurnEnded;
+            MoveHandler.OnKingCaptured += OnKingCaptured;
         }
 
         private void OnTurnEnded()
         {
             IsWhitesTurn = !IsWhitesTurn;
+        }
+
+        private void OnKingCaptured(bool isWhite)
+        {
+            Debug.Log($"King captured and is White = {isWhite}");
         }
     }
 }

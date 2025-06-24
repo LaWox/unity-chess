@@ -15,9 +15,15 @@ namespace GameHandler
             _board = new PlayerPiece[gridConfig.width, gridConfig.height];
         }
 
+
         public void SetCellState(Vector2Int cellIndex, PlayerPiece piece)
         {
             _board[cellIndex.x, cellIndex.y] = piece;
+        }
+
+        public void ClearCellState(Vector2Int cellIndex, bool isCapture = false)
+        {
+            _board[cellIndex.x, cellIndex.y] = null;
         }
 
         [CanBeNull]

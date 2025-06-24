@@ -1,4 +1,5 @@
 using Grid;
+using PlayerPieces;
 using UnityEngine;
 
 namespace GameHandler
@@ -6,6 +7,8 @@ namespace GameHandler
     public class MoveHandler : MonoBehaviour
     {
         public delegate void MoveHandlerDelegate();
+
+        public delegate void MoveHandlerDelegateWithBool(bool isWhite);
 
         public GameObject moveIndicatorPrefab;
         private Vector2Int _activeCellIndex;
@@ -33,6 +36,7 @@ namespace GameHandler
         }
 
         public static event MoveHandlerDelegate OnTurnOver;
+        public static event MoveHandlerDelegateWithBool OnKingCaptured;
 
 
         public void SetPieceStartPos(Vector2Int pos)
@@ -64,8 +68,9 @@ namespace GameHandler
             var endPiece = _boardHandler.GetCellState(_activeCellIndex);
 
             if (endPiece) endPiece.gameObject.SetActive(false);
+            if (endPiece is King) OnKingCaptured?.Invoke(endPiece.IsWhite);
 
-            _boardHandler.SetCellState(_pieceStartPos, null);
+            _boardHandler.ClearCellState(_pieceStartPos, endPiece);
             _boardHandler.SetCellState(_activeCellIndex, activePiece);
 
             OnTurnOver?.Invoke();
