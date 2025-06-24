@@ -1,0 +1,37 @@
+.panel {
+    background-color: rgba(135, 125, 184, 0.82);
+    -unity-background-image-tint-color: rgb(255, 254, 254);
+    background-image: none;
+    align-items: center;
+}
+
+.menu {
+    background-color: rgba(34, 117, 188, 0.79);
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    border-radius: 5px;
+    width: 40%;
+    height: 80%;
+    align-items: center;
+    justify-content: flex-start;
+    -unity-background-image-tint-color: rgb(56, 56, 56);
+}
+
+.main-menu-button {
+    width: 300px;
+    height: 80px;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    border-radius: 5px;
+    -unity-text-align: middle-center;
+    font-size: 20px;
+    -unity-font-style: bold;
+}

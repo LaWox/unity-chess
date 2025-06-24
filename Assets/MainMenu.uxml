@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/main-menu.uss?fileID=7433441132597879392&amp;guid=81bb12a5ddac8c945aaae2d6fde4d79f&amp;type=3#main-menu" />
+    <ui:VisualElement name="Panel" class="panel" style="flex-grow: 1;">
+        <ui:VisualElement name="Container" class="menu" style="flex-grow: 1; width: 400px; height: auto; min-height: auto; max-height: 70%; justify-content: flex-end; margin-top: auto; margin-bottom: auto; border-top-width: 5px; border-right-width: 5px; border-bottom-width: 5px; border-left-width: 5px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); padding-bottom: 40px;">
+            <ui:Button text="1v1" name="vsPlayerButton" class="main-menu-button" />
+            <ui:Button text="AI" name="vsAIButton" class="main-menu-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
