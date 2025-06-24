@@ -1,6 +1,7 @@
 using Constants;
 using GameHandler;
 using Grid;
+using PlayerPieces;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,6 +14,7 @@ public class PointerHandler : MonoBehaviour
     private Vector2Int _activeCellIndex;
 
     private Camera _camera;
+    private GameManager _gameManager;
     private GridHandler _gridHandler;
     private MoveHandler _moveHandler;
     private Vector3 _pointerPosition;
@@ -25,6 +27,7 @@ public class PointerHandler : MonoBehaviour
         _selectedObject = null;
         _gridHandler = FindFirstObjectByType<GridHandler>();
         _moveHandler = FindFirstObjectByType<MoveHandler>();
+        _gameManager = FindFirstObjectByType<GameManager>();
     }
 
     private void Update()
@@ -50,43 +53,41 @@ public class PointerHandler : MonoBehaviour
 
     private void SetPointerPosition()
     {
-        // Create a ray from the camera through the mouse position
         var ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
 
-        // If the ray hits something
-        if (Physics.Raycast(ray, out var hit))
-            switch (hit.transform.gameObject.tag)
-            {
-                case Tags.Movable:
-                    if (Mouse.current.leftButton.isPressed && !_selectedObject)
-                    {
-                        OnMovableObjectHeld?.Invoke();
-                        _selectedObject = hit.transform.gameObject.GetComponent<Movable>();
-                        _selectedObject.SetSelected();
-                        _moveHandler.SetPieceStartPos(_gridHandler.GetCellIndexFromWorldPosition(hit.point));
-                    }
+        if (!Physics.Raycast(ray, out var hit)) return;
 
-                    break;
-                case Tags.Board:
-                    _pointerPosition = hit.point;
-                    var activeCell = _gridHandler.GetCellIndexFromWorldPosition(hit.point);
-                    if (activeCell != _activeCellIndex && _selectedObject)
-                    {
-                        _activeCellIndex = activeCell;
-                        OnActiveCellUpdate?.Invoke(activeCell);
-                    }
+        switch (hit.transform.gameObject.tag)
+        {
+            case Tags.Movable:
+                if (Mouse.current.leftButton.isPressed && !_selectedObject)
+                    if (hit.transform.gameObject.TryGetComponent<PlayerPiece>(out var playerPiece))
+                        if (_gameManager.IsWhitesTurn == playerPiece.IsWhite)
+                            if (hit.transform.gameObject.TryGetComponent<Movable>(out var movable))
+                            {
+                                _selectedObject = movable;
+                                movable.SetSelected();
+                                _moveHandler.SetPieceStartPos(
+                                    _gridHandler.GetCellIndexFromWorldPosition(hit.point));
+                                OnMovableObjectHeld?.Invoke();
+                            }
 
-                    break;
-                default:
-                    _pointerPosition = hit.point;
-                    OnMovableObjectDropped?.Invoke();
-                    break;
-            }
-    }
+                break;
+            case Tags.Board:
+                _pointerPosition = hit.point;
+                var activeCell = _gridHandler.GetCellIndexFromWorldPosition(hit.point);
+                if (activeCell != _activeCellIndex && _selectedObject)
+                {
+                    _activeCellIndex = activeCell;
+                    OnActiveCellUpdate?.Invoke(activeCell);
+                }
 
-    public Vector2Int GetActiveCellIndex()
-    {
-        return _activeCellIndex;
+                break;
+            default:
+                _pointerPosition = hit.point;
+                OnMovableObjectDropped?.Invoke();
+                break;
+        }
     }
 
     public Vector3 GetPointerPosition()

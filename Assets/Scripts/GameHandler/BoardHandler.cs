@@ -15,11 +15,6 @@ namespace GameHandler
             _board = new PlayerPiece[gridConfig.width, gridConfig.height];
         }
 
-        private void Start()
-        {
-            OnPlayerChange(true);
-        }
-
         public void SetCellState(Vector2Int cellIndex, PlayerPiece piece)
         {
             _board[cellIndex.x, cellIndex.y] = piece;
@@ -53,22 +48,6 @@ namespace GameHandler
             if (move.x == 0 || move.y == 0) move = move / Mathf.FloorToInt(move.magnitude);
 
             return validMoves.ToList().Contains(move);
-        }
-
-        public void OnPlayerChange(bool isWhitesTurn)
-        {
-            var activePieces = _board
-                .Cast<PlayerPiece>()
-                .Where(piece => piece)
-                .Where(piece => isWhitesTurn ? piece.IsWhite : !piece.IsWhite)
-                .ToList();
-            var inActivePieces = _board
-                .Cast<PlayerPiece>().Except(activePieces).Where(piece => piece).ToList();
-
-            activePieces
-                .ForEach(piece => piece.gameObject.GetComponent<MeshCollider>().enabled = true);
-            inActivePieces
-                .ForEach(piece => piece.gameObject.GetComponent<MeshCollider>().enabled = false);
         }
     }
 }
