@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/main-menu.uss?fileID=7433441132597879392&amp;guid=81bb12a5ddac8c945aaae2d6fde4d79f&amp;type=3#main-menu" />
+    <ui:VisualElement name="Container" class="panel" style="flex-grow: 1; justify-content: center;">
+        <ui:VisualElement name="Menu" class="menu" style="flex-grow: 1; max-height: 80%; position: relative; justify-content: center;">
+            <ui:Button text="Resume" name="resumeButton" class="main-menu-button" />
+            <ui:Button text="Quit to main menu" name="quitToMenuButton" class="main-menu-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

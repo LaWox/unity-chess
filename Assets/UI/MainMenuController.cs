@@ -1,3 +1,4 @@
+using GameHandler;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -5,25 +6,38 @@ namespace UI
 {
     public class MainMenuController : MonoBehaviour
     {
+        public UIDocument uiDoc;
+        private GameManager _gameManager;
         private VisualElement _ui;
-        public Button vsPlayerButton, vsAIButton;
+        private Button _vsPlayerButton, _vsAIButton, _quitButton;
 
 
         private void Awake()
         {
-            _ui = gameObject.GetComponent<UIDocument>().rootVisualElement;
+            uiDoc = gameObject.GetComponent<UIDocument>();
+            _ui = uiDoc.rootVisualElement;
+        }
+
+        private void Start()
+        {
+            _gameManager = FindFirstObjectByType<GameManager>();
         }
 
         private void OnEnable()
         {
-            vsPlayerButton = _ui.Q<Button>("vsPlayerButton");
-            vsPlayerButton.clicked += OnPlayerButtonClicked;
+            _vsPlayerButton = _ui.Q<Button>("vsPlayerButton");
+            _vsPlayerButton.clicked += OnPlayerButtonClicked;
 
-            vsAIButton = _ui.Q<Button>("vsAIButton");
+            _vsAIButton = _ui.Q<Button>("vsAIButton");
+            _vsAIButton.clicked += OnPlayerButtonClicked;
+
+            _quitButton = _ui.Q<Button>("quitButton");
+            _quitButton.clicked += GameManager.QuitGame;
         }
 
         private void OnPlayerButtonClicked()
         {
+            _gameManager.StartGame();
             gameObject.SetActive(false);
         }
     }

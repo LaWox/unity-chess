@@ -19,7 +19,7 @@ namespace PlayerPieces
         private GridHandler _gridHandler;
         private PointerHandler _pointerHandler;
 
-        private void Start()
+        public void GeneratePieces()
         {
             _boardHandler = FindFirstObjectByType<BoardHandler>();
             _pointerHandler = FindFirstObjectByType<PointerHandler>();
@@ -64,7 +64,7 @@ namespace PlayerPieces
 
                 // white
                 pawnPieceWhite.transform.position = _gridHandler.GetWorldPositionFromCellIndex(new Vector2Int(i, 1));
-                ;
+
                 pawnPieceWhite.GetComponent<Renderer>().material = materialWhite;
                 pawnPieceComponentWhite.Initialize(true, new Vector2Int(i, 1), false);
                 _boardHandler.SetCellState(new Vector2Int(i, 1), pawnPieceComponentWhite);

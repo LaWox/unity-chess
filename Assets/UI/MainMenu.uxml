@@ -1,9 +1,15 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/main-menu.uss?fileID=7433441132597879392&amp;guid=81bb12a5ddac8c945aaae2d6fde4d79f&amp;type=3#main-menu" />
     <ui:VisualElement name="Panel" class="panel" style="flex-grow: 1;">
-        <ui:VisualElement name="Container" class="menu" style="flex-grow: 1; width: 400px; height: auto; min-height: auto; max-height: 70%; justify-content: flex-end; margin-top: auto; margin-bottom: auto; border-top-width: 5px; border-right-width: 5px; border-bottom-width: 5px; border-left-width: 5px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); padding-bottom: 40px;">
-            <ui:Button text="1v1" name="vsPlayerButton" class="main-menu-button" />
-            <ui:Button text="AI" name="vsAIButton" class="main-menu-button" />
+        <ui:VisualElement name="Container" class="menu" style="flex-grow: 1; width: 400px; height: auto; min-height: auto; max-height: 80%; justify-content: center; margin-top: auto; margin-bottom: auto; padding-bottom: 0; padding-top: 0; padding-right: 0; padding-left: 0; align-items: center; align-self: auto; align-content: auto;">
+            <ui:VisualElement name="Label" style="flex-grow: 1; align-items: auto; justify-content: center;">
+                <ui:Label text="Kul m Kjack" style="font-size: 30px; -unity-font-style: bold;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Buttons" style="flex-grow: 1; justify-content: center; padding-bottom: 0; align-items: center; padding-top: 0; padding-right: 0; padding-left: 0;">
+                <ui:Button text="1v1" name="vsPlayerButton" class="main-menu-button" />
+                <ui:Button text="AI" name="vsAIButton" class="main-menu-button" />
+                <ui:Button text="Quit" name="quitButton" class="main-menu-button" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
